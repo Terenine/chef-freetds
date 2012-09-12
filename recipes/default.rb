@@ -9,16 +9,16 @@ execute "ldconfig" do
   action :nothing
 end
 
-remote_file "/tmp/#{node['freetds']['version']}" do
-  source "ftp://ftp.astron.com/pub/freetds/stable/freetds-#{node['freetds']['version']}.tar.gz"
+remote_file "/tmp/freetds-#{node['freetds']['version']}.tar.gz" do
+  source "http://mirrors.ibiblio.org/freetds/stable/git/freetds-#{node['freetds']['version']}.tar.gz"
   mode 0644
   action :create_if_missing
 end
 
-execute "tar -xf freetds-#{node['freetds']['version']}.tar.gz" do
+execute "tar -xzf freetds-#{node['freetds']['version']}.tar.gz" do
   cwd "/tmp"
   user "root"
-  creates freetds_dir
+  creates "/tmp/freetds-#{node['freetds']['version']}"
 end
 
 execute "compile freetds" do
@@ -26,12 +26,15 @@ execute "compile freetds" do
   user "root"
   cwd "/tmp/freetds-#{node['freetds']['version']}"
   creates "/usr/local/lib/libsybdb.so.5"
+  not_if do
+    File.exists? "/usr/local/lib/libsybdb.so.5"
+  end
   notifies :run, resources(:execute => "ldconfig")
 end
 
-template freetds_conf do
-  source "freetds.conf"
-  owner "root"
-  group "root"
-  mode 0644
-end
+#template freetds_conf do
+#  source "freetds.conf"
+#  owner "root"
+#  group "root"
+#  mode 0644
+#end
