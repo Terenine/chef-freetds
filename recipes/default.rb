@@ -25,7 +25,7 @@ execute "compile freetds" do
   command "./configure --with-openssl=/usr/lib64/openssl && make && make install"
   user "root"
   cwd "/tmp/freetds-#{node['freetds']['version']}"
-  creates "/usr/local/lib/libsybdb.so.5"
+#  creates "/usr/local/lib/libsybdb.so.5"
   # not_if do
   #   File.exists? "/usr/local/lib/libsybdb.so.5"
   # end
