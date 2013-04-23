@@ -26,9 +26,9 @@ execute "compile freetds" do
   user "root"
   cwd "/tmp/freetds-#{node['freetds']['version']}"
   creates "/usr/local/lib/libsybdb.so.5"
-  not_if do
-    File.exists? "/usr/local/lib/libsybdb.so.5"
-  end
+  # not_if do
+  #   File.exists? "/usr/local/lib/libsybdb.so.5"
+  # end
   notifies :run, resources(:execute => "ldconfig")
 end
 
