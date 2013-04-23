@@ -22,7 +22,7 @@ execute "tar -xzf freetds-#{node['freetds']['version']}.tar.gz" do
 end
 
 execute "compile freetds" do
-  command "./configure && make && make install"
+  command "./configure --with-openssl=/usr/lib64/openssl && make && make install"
   user "root"
   cwd "/tmp/freetds-#{node['freetds']['version']}"
   creates "/usr/local/lib/libsybdb.so.5"
